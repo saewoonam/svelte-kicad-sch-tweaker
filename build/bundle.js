@@ -15735,208 +15735,281 @@ var app = (function () {
     	}
     }
 
-    var test_parts = {
-    	"Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder": {
-    	"249": {
-    		designator: [
-    			"R12",
-    			"R18",
-    			"R24",
-    			"R30"
-    		],
-    		MPN: "TC0325B2490T5E",
-    		LCSC: "C124686"
-    	},
-    	"10k": {
-    		designator: [
-    			"R7",
-    			"R13",
-    			"R19",
-    			"R25"
-    		],
-    		MPN: "RC0603FR-0710KL",
-    		LCSC: ""
-    	},
-    	"100k": {
-    		designator: [
-    			"R8",
-    			"R14",
-    			"R20",
-    			"R26",
-    			"R9",
-    			"R15",
-    			"R21",
-    			"R27"
-    		],
-    		MPN: "RC0603FR-07100KL",
-    		LCSC: ""
-    	},
-    	"4.42K": {
-    		designator: [
-    			"R11",
-    			"R17",
-    			"R23",
-    			"R29"
-    		],
-    		MPN: "0603WAF4421T5E",
-    		LCSC: "C23043"
-    	},
-    	"10K": {
-    		designator: [
-    			"R10",
-    			"R16",
-    			"R22",
-    			"R28"
-    		],
-    		MPN: "0603WAF1002T5E",
-    		LCSC: "C25804"
-    	}
-    },
-    	"Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder": {
-    	"MMZ2012Y152B ": {
-    		designator: [
-    			"L1",
-    			"L2",
-    			"L3",
-    			"L4"
-    		],
-    		MPN: "MMZ2012Y152B",
-    		LCSC: ""
-    	}
-    },
-    	"AD8237ARMZ:SOP65P490X110-8N": {
-    	AD8237ARMZ: {
-    		designator: [
-    			"IC3",
-    			"IC6",
-    			"IC9",
-    			"IC12"
-    		],
-    		MPN: "AD8237ARMZ",
-    		LCSC: ""
-    	}
-    },
-    	"Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder": {
-    	"100nF": {
-    		designator: [
-    			"C8",
-    			"C18",
-    			"C28",
-    			"C38",
-    			"C7",
-    			"C17",
-    			"C27",
-    			"C37",
-    			"C10",
-    			"C20",
-    			"C30",
-    			"C40",
-    			"C4",
-    			"C14",
-    			"C24",
-    			"C34"
-    		],
-    		MPN: "",
-    		LCSC: ""
-    	},
-    	"1uF": {
-    		designator: [
-    			"C9",
-    			"C19",
-    			"C29",
-    			"C39"
-    		],
-    		MPN: "CL10A105KB8NNNC",
-    		LCSC: ""
-    	},
-    	"10uF": {
-    		designator: [
-    			"C3",
-    			"C13",
-    			"C23",
-    			"C33"
-    		],
-    		MPN: "CL10A106KP8NNNC",
-    		LCSC: "C19702"
-    	}
-    },
-    	"Capacitor_Tantalum_SMD:CP_EIA-3216-18_Kemet-A_Pad1.58x1.35mm_HandSolder": {
-    	"10uF": {
-    		designator: [
-    			"C11",
-    			"C21",
-    			"C31",
-    			"C41"
-    		],
-    		MPN: "TAJA106K016RNJ",
-    		LCSC: ""
-    	}
-    },
-    	"Capacitor_SMD:C_0402_1005Metric": {
-    	"100nF": {
-    		designator: [
-    			"C5",
-    			"C15",
-    			"C25",
-    			"C35",
-    			"C6",
-    			"C16",
-    			"C26",
-    			"C36"
-    		],
-    		MPN: "CL05B104KO5NNNC",
-    		LCSC: "C1525"
-    	},
-    	"1uF": {
-    		designator: [
-    			"C2",
-    			"C12",
-    			"C22",
-    			"C32"
-    		],
-    		MPN: "CL05A105KA5NQNC",
-    		LCSC: "C52923"
-    	}
-    },
-    	"Package_TO_SOT_SMD:TSOT-23-5": {
-    	"AD8603AUJZ-R2": {
-    		designator: [
-    			"IC2",
-    			"IC5",
-    			"IC8",
-    			"IC11"
-    		],
-    		MPN: "AD8603AUJZ-R2",
-    		LCSC: ""
-    	}
-    },
-    	"Package_TO_SOT_SMD:SOT-23-6_Handsoldering": {
-    	REF3425IDBVR: {
-    		designator: [
-    			"IC1",
-    			"IC4",
-    			"IC7",
-    			"IC10"
-    		],
-    		MPN: "",
-    		LCSC: ""
-    	}
-    },
-    	"Package_SO:MSOP-8_3x3mm_P0.65mm": {
-    	AD8236: {
-    		designator: [
-    			"U2",
-    			"U3",
-    			"U4",
-    			"U5"
-    		],
-    		MPN: "",
-    		LCSC: ""
-    	}
-    }
-    };
-
     const grouped_data = writable({});
+
+    function load_sheet(raw) {
+        console.log('parse_sheet');
+        let contents = [];
+
+        let parse_block = 0;
+        let block = {};
+        let item_index = 0;
+        function process_line(line) {
+            // console.log(line)
+            var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+            // console.log(pieces)
+
+            if (parse_block==0) {
+                // console.log(pieces[0])
+                switch(pieces[0]) {
+                    case 'EESchema':
+                    case 'Connection':
+                    case 'NoConn':
+                    case '$EndSCHEMATC':
+                        parse_block = 0;
+                        break;
+                    case 'LIBS':  // not sure how to process this
+                        console.log('got ', pieces[0]);
+                        break;
+                    case 'EELAYER':
+                    case 'Text':
+                    case 'Wire':
+                    case 'Entry':
+                        parse_block = 1;
+                        break;
+                    case '$Descr':
+                    case '$Sheet':
+                    case '$Comp':
+                    case '$Bitmap':
+                        parse_block = 2;
+                        break;
+                    default:
+                        console.log('not recognized', pieces[0]);
+                        parse_block = -1;
+                }
+                if (parse_block >= 0) {  // handle recognized parts
+                    // console.log(pieces[0])
+                    block = {'type':pieces[0], 'lines': [line], 'idx': item_index};
+                    if (parse_block == 0) contents.push(block);
+                    item_index += 1;
+                } else parse_block = 0; // done handling not recognized
+            } else if (parse_block ==1 ) {
+                // append line to block
+                block['lines'].push(line);
+                parse_block = 0;
+                contents.push(block);
+            } else {
+                block['lines'].push(line);
+                // check if this is the last line of the block
+                if (/^\$End/.test(line)) {
+                    parse_block = 0;
+                    contents.push(block);
+                }
+            }
+        }
+        for (let line of raw.split(/\r?\n/)) {
+            // console.log(line.length, line)
+            if (line.length>0) process_line(line);
+        }
+        console.log('done');
+        return contents
+    }
+    function process_sheet_content(contents, sheets_to_update) {
+        // let grouped = {}
+        console.log('mark components');
+        // mark items which are components
+        for (let item of contents) {
+            if (item['type']=='$Comp') {
+                for (let line of item['lines']) {
+                    if (/^F 0/.test(line)) {
+                        var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+                        if (!pieces[2].startsWith('"#')) {
+                            // console.log(item['idx'], line)
+                            item['component'] = true;
+                        }
+                    }
+                }
+            }
+            if (item['type']=='$Sheet') {
+                console.log('found sheet');
+                // need to consolidate these
+                for (let line of item['lines']) {
+                    // console.log(line)
+                    if (/^F0/.test(line)) {
+                        var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+                        console.log('sheet ID', pieces[1]);
+                    } else if (/^F1/.test(line)) {
+                        var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+                        const name = pieces[1].match(/"(.*?)"/)[1];
+                        console.log('sheet filename', pieces[1]);
+                        const index = sheets_to_update.indexOf(name);
+                        if (index==-1) sheets_to_update.push(name);
+                    }
+                }
+            }
+        }
+    }
+
+
+    let required_fields = ['MPN', 'LCSC'];
+    function add_field(name, lines) {
+        let num_f = 0;
+        let newline;
+        for (let line of lines) {
+            let pieces = line.split(' ');
+            if (pieces[0]=='F') num_f++;
+            if (pieces[1]=='3') newline = line;
+        }
+        // fix newline which is a copy of field #3 as a template
+        let pieces = newline.match(/(?:[^\s"]+|"[^"]*")+/g);
+        pieces[1] = num_f;
+        pieces[2] = '""';
+        newline = pieces.join(' ');
+        newline += ' "'+name+'"';
+        // console.log('add_field, num_f', num_f)
+        const index = lines.findIndex(elt => elt.startsWith("F "+(num_f-1)));
+        // console.log('index', index, lines[index])
+        lines.splice(index+1, 0, newline);
+        // console.log('add_field', lines)
+        return lines
+    }
+
+    function update_field(name, value, lines) {
+        let found = false;
+        let line_number = 0;
+        let pieces;
+        console.log('update_field called', name, value);
+        for (let line of lines) {
+            pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+            // console.log(pieces.length, pieces)
+            if (pieces.length==11) { // found custom fields look for name
+                if (pieces[10].match(/"(.*?)"/)[1]==name) {
+                    found = true;
+                    break;
+                }
+            }
+            if (name == 'Value' && /^F 1 /.test(line)) {
+                found = true;
+                break
+            }
+            if (name == 'Footprint' && /^F 2 /.test(line)) {
+                found = true;
+                break
+            }
+            line_number++;
+        }
+        if (found) {
+            console.log('update and found', name);
+            pieces[2] = '"'+value+'"';
+            let newline = pieces.join(' ');
+            lines[line_number] = newline;
+        }
+    }
+
+    function add_to_group(contents, grouped, ref_map, sheet_name) {
+        let item_idx = 0;
+        for (let item of contents) {
+            if (item['component']) {
+                let value, footprint;
+                let fields_to_add = [...required_fields];
+                let extra_fields = {};
+                fields_to_add.forEach(elt => extra_fields[elt] = '');
+                let references = [];
+                for (let line of item['lines']) {
+                    var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+                    if (pieces[0]=='F') ;
+                    if (/^AR/.test(line)) {
+                        const ref = pieces[2].match(/"(.*?)"/)[1];
+                        if (!ref.endsWith('?')) {
+                            const index = references.indexOf(ref);
+                            if (index==-1) { 
+                                references.push(ref);
+                                ref_map.push([ref, sheet_name, item_idx]);
+                            }
+                        }
+                    }
+                    if (/^F 0 /.test(line)) {
+                        const ref = pieces[2].match(/"(.*?)"/)[1];
+                        if (!ref.endsWith('?')) {
+                            const index = references.indexOf(ref);
+                            if (index==-1) {
+                                references.push(ref);
+                                ref_map.push([ref, sheet_name, item_idx]);
+                            }
+                        }
+                    }
+                    if (/^F 1 /.test(line)) {
+                        value = pieces[2].match(/"(.*?)"/)[1];
+                        // console.log(value)
+                    }
+                    if (/^F 2 /.test(line)) {
+                        footprint = pieces[2].match(/"(.*?)"/)[1];
+                    }
+                    if (pieces.length==11) {
+                        let field = pieces[10].match(/"(.*?)"/)[1];
+                        if (field in extra_fields) {
+                            // console.log("has", field)
+                            extra_fields[field] = pieces[2].match(/"(.*?)"/)[1];
+                            const index = fields_to_add.indexOf(field);
+                            if (index>-1) fields_to_add.splice(index, 1);  // remove from list to add
+                            // console.log('extra_fields left', fields_to_add)
+                        }
+                    }
+                }
+                console.log('fields to add', fields_to_add);
+                fields_to_add.forEach( elt => {
+                    item.lines = add_field(elt, item.lines);
+                });
+
+                if (grouped[footprint]) { // footprint is already there
+                    if(grouped[footprint][value]) { // value is already there
+                        grouped[footprint][value]['designator'].push(...references);
+                    } else { // value is not yet there
+                        grouped[footprint][value]={'designator':references};
+                        grouped[footprint][value] = {...grouped[footprint][value], ...extra_fields};
+                        // grouped[footprint][value].lcsc = extra_fields.lcsc
+                        // grouped[footprint][value].mpn = extra_fields.mpn
+                    }
+                } else {  // footprint is not yet there
+                    grouped[footprint] = {};
+                    grouped[footprint][value] = {'designator': references};
+                    grouped[footprint][value] = {...grouped[footprint][value], ...extra_fields};
+                    // grouped[footprint][value].lcsc = extra_fields.lcsc
+                    // grouped[footprint][value].mpn = extra_fields.mpn
+                }
+                // console.log(designator, value, footprint)
+                // console.log(item)
+            }
+            item_idx++;
+        }
+    }
+    function get_all_sheets(files, start_idx) {
+        console.log('get_all_sheets, files',files);
+        let grouped = {};
+        let ref_map = [];
+        let content = load_sheet(files[start_idx].raw);
+        // console.log('content', content);
+        files[start_idx].content = content;
+        let sheets_to_process = [];
+        process_sheet_content(content, sheets_to_process);
+        add_to_group(content, grouped, ref_map, files[start_idx].name);
+        console.log('sheets_to_update', sheets_to_process);
+        while (sheets_to_process.length>0) {
+            // const new_name = path.dirname(filename)+path.sep+sheets_to_update.pop()
+            const new_name = sheets_to_process.pop();
+            console.log('processing  this file', new_name);
+            let file = files.filter(elt => elt.name==new_name)[0];
+            content = load_sheet(file.raw);
+            file.content = content;
+            process_sheet_content(content, sheets_to_process);
+            add_to_group(content, grouped, ref_map, new_name);
+            console.log('sheets_to_update', sheets_to_process);
+        }
+        console.log('Done with get_all_sheets');
+        // console.log(grouped)
+        // console.log('ref_map', ref_map)
+        return {'grouped':grouped, 'ref_map':ref_map, 'files':files}
+    }
+
+    function update_raw(file) {
+        if (!("content" in file)) return false;
+        file.raw = "";
+        for (let object of file.content) {
+            file.raw  += object.lines.join("\n");
+            file.raw += "\n";
+        }
+        return true;
+    }
 
     /* src/Editor.svelte generated by Svelte v3.32.1 */
 
@@ -15945,20 +16018,88 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[19] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[19] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
-    // (148:4) {#each Array.from(footprints.keys()) as id}
+    // (170:4) {#if footprints}
+    function create_if_block$6(ctx) {
+    	let each_1_anchor;
+    	let each_value_1 = Array.from(/*footprints*/ ctx[0].keys());
+    	validate_each_argument(each_value_1);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_1.length; i += 1) {
+    		each_blocks[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			each_1_anchor = empty();
+    		},
+    		m: function mount(target, anchor) {
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(target, anchor);
+    			}
+
+    			insert_dev(target, each_1_anchor, anchor);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*Array, footprints*/ 1) {
+    				each_value_1 = Array.from(/*footprints*/ ctx[0].keys());
+    				validate_each_argument(each_value_1);
+    				let i;
+
+    				for (i = 0; i < each_value_1.length; i += 1) {
+    					const child_ctx = get_each_context_1$1(ctx, each_value_1, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_1$1(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_1.length;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(each_1_anchor);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$6.name,
+    		type: "if",
+    		source: "(170:4) {#if footprints}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (171:6) {#each Array.from(footprints.keys()) as id}
     function create_each_block_1$1(ctx) {
     	let option;
-    	let t0_value = /*footprints*/ ctx[0][/*id*/ ctx[19]] + "";
+    	let t0_value = /*footprints*/ ctx[0][/*id*/ ctx[22]] + "";
     	let t0;
     	let t1;
     	let option_value_value;
@@ -15968,9 +16109,9 @@ var app = (function () {
     			option = element("option");
     			t0 = text(t0_value);
     			t1 = space();
-    			option.__value = option_value_value = /*id*/ ctx[19];
+    			option.__value = option_value_value = /*id*/ ctx[22];
     			option.value = option.__value;
-    			add_location(option, file$6, 148, 4, 5094);
+    			add_location(option, file$6, 171, 8, 5961);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -15978,9 +16119,9 @@ var app = (function () {
     			append_dev(option, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*footprints*/ 1 && t0_value !== (t0_value = /*footprints*/ ctx[0][/*id*/ ctx[19]] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*footprints*/ 1 && t0_value !== (t0_value = /*footprints*/ ctx[0][/*id*/ ctx[22]] + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*footprints*/ 1 && option_value_value !== (option_value_value = /*id*/ ctx[19])) {
+    			if (dirty & /*footprints*/ 1 && option_value_value !== (option_value_value = /*id*/ ctx[22])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -15994,17 +16135,17 @@ var app = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(148:4) {#each Array.from(footprints.keys()) as id}",
+    		source: "(171:6) {#each Array.from(footprints.keys()) as id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (158:4) {#each Array.from(values.keys()) as id}
+    // (182:4) {#each Array.from(values.keys()) as id}
     function create_each_block$1(ctx) {
     	let option;
-    	let t0_value = /*values*/ ctx[3][/*id*/ ctx[19]] + "";
+    	let t0_value = /*values*/ ctx[3][/*id*/ ctx[22]] + "";
     	let t0;
     	let t1;
     	let option_value_value;
@@ -16014,9 +16155,9 @@ var app = (function () {
     			option = element("option");
     			t0 = text(t0_value);
     			t1 = space();
-    			option.__value = option_value_value = /*id*/ ctx[19];
+    			option.__value = option_value_value = /*id*/ ctx[22];
     			option.value = option.__value;
-    			add_location(option, file$6, 158, 4, 5392);
+    			add_location(option, file$6, 182, 4, 6279);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -16024,9 +16165,9 @@ var app = (function () {
     			append_dev(option, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*values*/ 8 && t0_value !== (t0_value = /*values*/ ctx[3][/*id*/ ctx[19]] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*values*/ 8 && t0_value !== (t0_value = /*values*/ ctx[3][/*id*/ ctx[22]] + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*values*/ 8 && option_value_value !== (option_value_value = /*id*/ ctx[19])) {
+    			if (dirty & /*values*/ 8 && option_value_value !== (option_value_value = /*id*/ ctx[22])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -16040,7 +16181,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(158:4) {#each Array.from(values.keys()) as id}",
+    		source: "(182:4) {#each Array.from(values.keys()) as id}",
     		ctx
     	});
 
@@ -16077,28 +16218,24 @@ var app = (function () {
     	let t13;
     	let input2;
     	let input2_value_value;
+    	let input2_disabled_value;
     	let t14;
     	let p3;
     	let label5;
     	let t16;
     	let input3;
     	let input3_value_value;
+    	let input3_disabled_value;
     	let t17;
     	let p4;
     	let label6;
     	let t19;
     	let input4;
     	let input4_value_value;
+    	let input4_disabled_value;
     	let mounted;
     	let dispose;
-    	let each_value_1 = Array.from(/*footprints*/ ctx[0].keys());
-    	validate_each_argument(each_value_1);
-    	let each_blocks_1 = [];
-
-    	for (let i = 0; i < each_value_1.length; i += 1) {
-    		each_blocks_1[i] = create_each_block_1$1(get_each_context_1$1(ctx, each_value_1, i));
-    	}
-
+    	let if_block = /*footprints*/ ctx[0] && create_if_block$6(ctx);
     	let each_value = Array.from(/*values*/ ctx[3].keys());
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -16115,11 +16252,7 @@ var app = (function () {
     			label0.textContent = "Footprint";
     			t1 = space();
     			select0 = element("select");
-
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].c();
-    			}
-
+    			if (if_block) if_block.c();
     			t2 = space();
     			div1 = element("div");
     			label1 = element("label");
@@ -16164,36 +16297,36 @@ var app = (function () {
     			input4 = element("input");
     			attr_dev(label0, "for", "footprint_select");
     			attr_dev(label0, "class", "fields svelte-3g7ow9");
-    			add_location(label0, file$6, 145, 2, 4910);
+    			add_location(label0, file$6, 167, 2, 5750);
     			attr_dev(select0, "id", "footprint_select");
     			attr_dev(select0, "size", "5");
     			if (/*footprint_idx*/ ctx[1] === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[11].call(select0));
-    			add_location(select0, file$6, 146, 2, 4976);
+    			add_location(select0, file$6, 168, 2, 5816);
     			attr_dev(div0, "class", "centered-select grouped svelte-3g7ow9");
-    			add_location(div0, file$6, 143, 0, 4869);
+    			add_location(div0, file$6, 165, 0, 5709);
     			attr_dev(label1, "for", "value_select");
     			attr_dev(label1, "class", "fields svelte-3g7ow9");
-    			add_location(label1, file$6, 155, 2, 5224);
+    			add_location(label1, file$6, 179, 2, 6111);
     			attr_dev(select1, "id", "value_select");
     			attr_dev(select1, "size", "5");
     			if (/*value_idx*/ ctx[2] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[12].call(select1));
-    			add_location(select1, file$6, 156, 2, 5287);
+    			add_location(select1, file$6, 180, 2, 6174);
     			attr_dev(div1, "class", "centered-select grouped svelte-3g7ow9");
-    			add_location(div1, file$6, 154, 0, 5184);
+    			add_location(div1, file$6, 178, 0, 6071);
     			attr_dev(label2, "class", "fields svelte-3g7ow9");
     			attr_dev(label2, "for", "refs");
-    			add_location(label2, file$6, 166, 4, 5511);
+    			add_location(label2, file$6, 190, 4, 6398);
     			attr_dev(input0, "id", "refs");
     			attr_dev(input0, "type", "text");
     			input0.value = input0_value_value = /*fields*/ ctx[4].refs;
     			input0.readOnly = "readonly";
     			set_style(input0, "background", "lightgrey");
-    			add_location(input0, file$6, 167, 4, 5569);
+    			add_location(input0, file$6, 191, 4, 6456);
     			attr_dev(p0, "class", "grouped svelte-3g7ow9");
-    			add_location(p0, file$6, 165, 2, 5486);
+    			add_location(p0, file$6, 189, 2, 6373);
     			attr_dev(label3, "class", "fields svelte-3g7ow9");
     			attr_dev(label3, "for", "Footprint");
-    			add_location(label3, file$6, 170, 4, 5703);
+    			add_location(label3, file$6, 194, 4, 6590);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "class", "fields-input");
     			attr_dev(input1, "id", "Footprint");
@@ -16202,12 +16335,12 @@ var app = (function () {
     			? /*footprints*/ ctx[0][/*footprint_idx*/ ctx[1]]
     			: "";
 
-    			add_location(input1, file$6, 171, 4, 5764);
+    			add_location(input1, file$6, 195, 4, 6651);
     			attr_dev(p1, "class", "grouped svelte-3g7ow9");
-    			add_location(p1, file$6, 169, 2, 5679);
+    			add_location(p1, file$6, 193, 2, 6566);
     			attr_dev(label4, "class", "fields svelte-3g7ow9");
     			attr_dev(label4, "for", "Value");
-    			add_location(label4, file$6, 175, 4, 5968);
+    			add_location(label4, file$6, 199, 4, 6855);
     			attr_dev(input2, "type", "text");
     			attr_dev(input2, "id", "Value");
 
@@ -16215,30 +16348,33 @@ var app = (function () {
     			? /*values*/ ctx[3][/*value_idx*/ ctx[2]]
     			: "";
 
-    			add_location(input2, file$6, 176, 4, 6021);
+    			input2.disabled = input2_disabled_value = /*value_idx*/ ctx[2] < 0;
+    			add_location(input2, file$6, 200, 4, 6908);
     			attr_dev(p2, "class", "grouped svelte-3g7ow9");
-    			add_location(p2, file$6, 174, 2, 5944);
+    			add_location(p2, file$6, 198, 2, 6831);
     			attr_dev(label5, "class", "fields svelte-3g7ow9");
     			attr_dev(label5, "for", "LCSC");
-    			add_location(label5, file$6, 180, 4, 6183);
+    			add_location(label5, file$6, 204, 4, 7088);
     			attr_dev(input3, "type", "text");
     			attr_dev(input3, "id", "LCSC");
     			input3.value = input3_value_value = /*fields*/ ctx[4].LCSC;
-    			add_location(input3, file$6, 181, 4, 6234);
+    			input3.disabled = input3_disabled_value = /*value_idx*/ ctx[2] < 0 || /*footprint_idx*/ ctx[1] < 0;
+    			add_location(input3, file$6, 205, 4, 7139);
     			attr_dev(p3, "class", "grouped svelte-3g7ow9");
-    			add_location(p3, file$6, 179, 2, 6159);
+    			add_location(p3, file$6, 203, 2, 7064);
     			attr_dev(label6, "class", "fields svelte-3g7ow9");
     			attr_dev(label6, "for", "MPN");
-    			add_location(label6, file$6, 184, 4, 6340);
+    			add_location(label6, file$6, 208, 4, 7287);
     			attr_dev(input4, "type", "text");
     			attr_dev(input4, "id", "MPN");
     			input4.value = input4_value_value = /*fields*/ ctx[4].MPN;
-    			add_location(input4, file$6, 185, 4, 6388);
+    			input4.disabled = input4_disabled_value = /*value_idx*/ ctx[2] < 0 || /*footprint_idx*/ ctx[1] < 0;
+    			add_location(input4, file$6, 209, 4, 7335);
     			attr_dev(p4, "class", "grouped svelte-3g7ow9");
-    			add_location(p4, file$6, 183, 2, 6316);
-    			add_location(div2, file$6, 164, 0, 5478);
+    			add_location(p4, file$6, 207, 2, 7263);
+    			add_location(div2, file$6, 188, 0, 6365);
     			attr_dev(div3, "class", "card");
-    			add_location(div3, file$6, 142, 0, 4850);
+    			add_location(div3, file$6, 164, 0, 5690);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16249,11 +16385,7 @@ var app = (function () {
     			append_dev(div0, label0);
     			append_dev(div0, t1);
     			append_dev(div0, select0);
-
-    			for (let i = 0; i < each_blocks_1.length; i += 1) {
-    				each_blocks_1[i].m(select0, null);
-    			}
-
+    			if (if_block) if_block.m(select0, null);
     			select_option(select0, /*footprint_idx*/ ctx[1]);
     			append_dev(div3, t2);
     			append_dev(div3, div1);
@@ -16309,28 +16441,17 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*Array, footprints*/ 1) {
-    				each_value_1 = Array.from(/*footprints*/ ctx[0].keys());
-    				validate_each_argument(each_value_1);
-    				let i;
-
-    				for (i = 0; i < each_value_1.length; i += 1) {
-    					const child_ctx = get_each_context_1$1(ctx, each_value_1, i);
-
-    					if (each_blocks_1[i]) {
-    						each_blocks_1[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks_1[i] = create_each_block_1$1(child_ctx);
-    						each_blocks_1[i].c();
-    						each_blocks_1[i].m(select0, null);
-    					}
+    			if (/*footprints*/ ctx[0]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block$6(ctx);
+    					if_block.c();
+    					if_block.m(select0, null);
     				}
-
-    				for (; i < each_blocks_1.length; i += 1) {
-    					each_blocks_1[i].d(1);
-    				}
-
-    				each_blocks_1.length = each_value_1.length;
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
     			}
 
     			if (dirty & /*footprint_idx, Array, footprints*/ 3) {
@@ -16381,19 +16502,31 @@ var app = (function () {
     				prop_dev(input2, "value", input2_value_value);
     			}
 
+    			if (dirty & /*value_idx, Array, values*/ 12 && input2_disabled_value !== (input2_disabled_value = /*value_idx*/ ctx[2] < 0)) {
+    				prop_dev(input2, "disabled", input2_disabled_value);
+    			}
+
     			if (dirty & /*fields*/ 16 && input3_value_value !== (input3_value_value = /*fields*/ ctx[4].LCSC) && input3.value !== input3_value_value) {
     				prop_dev(input3, "value", input3_value_value);
     			}
 
+    			if (dirty & /*value_idx, footprint_idx, Array, values, footprints*/ 15 && input3_disabled_value !== (input3_disabled_value = /*value_idx*/ ctx[2] < 0 || /*footprint_idx*/ ctx[1] < 0)) {
+    				prop_dev(input3, "disabled", input3_disabled_value);
+    			}
+
     			if (dirty & /*fields*/ 16 && input4_value_value !== (input4_value_value = /*fields*/ ctx[4].MPN) && input4.value !== input4_value_value) {
     				prop_dev(input4, "value", input4_value_value);
+    			}
+
+    			if (dirty & /*value_idx, footprint_idx, Array, values, footprints*/ 15 && input4_disabled_value !== (input4_disabled_value = /*value_idx*/ ctx[2] < 0 || /*footprint_idx*/ ctx[1] < 0)) {
+    				prop_dev(input4, "disabled", input4_disabled_value);
     			}
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div3);
-    			destroy_each(each_blocks_1, detaching);
+    			if (if_block) if_block.d();
     			destroy_each(each_blocks, detaching);
     			mounted = false;
     			run_all(dispose);
@@ -16412,17 +16545,20 @@ var app = (function () {
     }
 
     function instance$6($$self, $$props, $$invalidate) {
+    	let $grouped_data;
+    	validate_store(grouped_data, "grouped_data");
+    	component_subscribe($$self, grouped_data, $$value => $$invalidate(14, $grouped_data = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Editor", slots, []);
-    	let parts_dict = test_parts;
+    	let parts_dict;
+
+    	//= test_parts;
     	console.log("Editor, parts_dict", parts_dict);
-    	let footprints = Object.keys(parts_dict);
+
+    	let ref_map;
+    	let footprints = []; // = Object.keys(parts_dict)
     	let changed = [];
-
-    	// let dialog = this.fetch('dialog')
-    	// let dialog = 'not clicked yet'
     	let footprint_idx = -1;
-
     	let old_footprint_idx = -1;
     	let value_idx;
     	let values = [];
@@ -16431,16 +16567,17 @@ var app = (function () {
     	let renameProp = (oldProp, newProp, { [oldProp]: old, ...others }) => ({ [newProp]: old, ...others });
 
     	const unsubscribe = grouped_data.subscribe(value => {
-    		$$invalidate(9, parts_dict = value);
+    		// console.log('value in subscribe', value);
+    		$$invalidate(9, parts_dict = value["grouped"]);
 
-    		//console.log("data changed, parts_dict", parts_dict)
-    		$$invalidate(0, footprints = Object.keys(parts_dict).filter(elt => elt != "filename"));
-
-    		//reset();
-    		$$invalidate(1, footprint_idx = -1);
-
-    		$$invalidate(3, values = []);
-    		$$invalidate(2, value_idx = -1);
+    		if (parts_dict) {
+    			$$invalidate(0, footprints = Object.keys(parts_dict).filter(elt => elt != "filename"));
+    			$$invalidate(1, footprint_idx = -1);
+    			$$invalidate(3, values = []);
+    			$$invalidate(2, value_idx = -1);
+    			ref_map = value["ref_map"];
+    			console.log("ref_map", ref_map);
+    		}
     	});
 
     	onDestroy(unsubscribe);
@@ -16457,15 +16594,32 @@ var app = (function () {
 
     	function set_lcsc(event) {
     		const newvalue = event.srcElement.value;
+    		let fieldname = "LCSC";
     		console.log("blur lcsc", newvalue);
-    		$$invalidate(9, parts_dict[footprints[footprint_idx]][values[value_idx]].LCSC = newvalue, parts_dict);
+    		console.log("grouped_data", $grouped_data);
+    		console.log("parts_dict", parts_dict[footprints[footprint_idx]]);
+    		set_field(fieldname, newvalue);
+    	}
+
+    	function set_field(fieldname, newvalue) {
+    		$$invalidate(9, parts_dict[footprints[footprint_idx]][values[value_idx]][fieldname] = newvalue, parts_dict);
+    		let references = parts_dict[footprints[footprint_idx]][values[value_idx]].designator;
+
+    		for (const ref of references) {
+    			const map = $grouped_data["ref_map"].filter(elt => elt[0] == ref)[0];
+    			console.log(map);
+    			let file = $grouped_data["files"].filter(elt => elt.name == map[1])[0];
+    			update_field(fieldname, newvalue, file.content[map[2]].lines);
+    			console.log("content", file.content[map[2]].lines);
+    		}
     	}
 
     	function set_mpn(event) {
     		const newvalue = event.srcElement.value;
-    		console.log("blur lcsc", newvalue);
+    		console.log("blur mpn", newvalue);
     		$$invalidate(9, parts_dict[footprints[footprint_idx]][values[value_idx]].MPN = newvalue, parts_dict);
     		console.log("blur mpn");
+    		set_field("MPN", newvalue);
     	}
 
     	function set(event) {
@@ -16502,9 +16656,7 @@ var app = (function () {
     				delete parts_dict[oldkey][values[value_idx]];
     			}
 
-    			// parts_dict = renameProp(footprints[footprint_idx], newkey, parts_dict)
     			console.log("old keys", footprints);
-
     			$$invalidate(0, footprints = Object.keys(parts_dict).filter(elt => elt != "filename"));
     			console.log("new keys", footprints);
     			$$invalidate(1, footprint_idx = footprints.indexOf(newkey));
@@ -16517,13 +16669,16 @@ var app = (function () {
     		if (event.srcElement.id == "Value") {
     			console.log("old value", values[value_idx], "new", newkey);
 
-    			// console.log(parts_dict[footprints[footprint_idx]])
-    			$$invalidate(9, parts_dict[footprints[footprint_idx]] = renameProp(values[value_idx], newkey, parts_dict[footprints[footprint_idx]]), parts_dict);
+    			if (newkey in parts_dict[footprints[footprint_idx]]) {
+    				// merge
+    				alert("Merge is not implemented");
+    			} else {
+    				// new value, create object
+    				$$invalidate(9, parts_dict[footprints[footprint_idx]] = renameProp(values[value_idx], newkey, parts_dict[footprints[footprint_idx]]), parts_dict);
 
-    			// console.log(parts_dict[footprints[footprint_idx]])
-    			$$invalidate(3, values = Object.keys(parts_dict[footprints[footprint_idx]]));
-
-    			$$invalidate(2, value_idx = values.indexOf(newkey));
+    				$$invalidate(3, values = Object.keys(parts_dict[footprints[footprint_idx]]));
+    				$$invalidate(2, value_idx = values.indexOf(newkey));
+    			}
     		}
     	}
 
@@ -16546,12 +16701,13 @@ var app = (function () {
     	}
 
     	$$self.$capture_state = () => ({
-    		test_parts,
     		onDestroy,
     		grouped_data,
     		Input,
     		Card,
+    		update_field,
     		parts_dict,
+    		ref_map,
     		footprints,
     		changed,
     		footprint_idx,
@@ -16565,13 +16721,16 @@ var app = (function () {
     		reset,
     		clear_value,
     		set_lcsc,
+    		set_field,
     		set_mpn,
     		set,
-    		change
+    		change,
+    		$grouped_data
     	});
 
     	$$self.$inject_state = $$props => {
     		if ("parts_dict" in $$props) $$invalidate(9, parts_dict = $$props.parts_dict);
+    		if ("ref_map" in $$props) ref_map = $$props.ref_map;
     		if ("footprints" in $$props) $$invalidate(0, footprints = $$props.footprints);
     		if ("changed" in $$props) changed = $$props.changed;
     		if ("footprint_idx" in $$props) $$invalidate(1, footprint_idx = $$props.footprint_idx);
@@ -16588,17 +16747,20 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*footprint_idx, value_idx*/ 6) {
+    			 {
+    				// disabled = footprint_idx < 0 || value_idx < 0;
+    				console.log("disabled, footprint, value idx", footprint_idx, value_idx);
+    			}
+    		}
+
     		if ($$self.$$.dirty & /*footprint_idx, old_footprint_idx, parts_dict, footprints*/ 1539) {
     			 {
     				console.log("footprint_idx chnage?", footprint_idx);
 
     				if (footprint_idx >= 0) {
     					if (old_footprint_idx != footprint_idx) {
-    						// console.log('old, new', old_footprint_idx, footprint_idx)
     						$$invalidate(3, values = Object.keys(parts_dict[footprints[footprint_idx]]));
-
-    						// console.log(values)
-    						// ref_idx = -1;
     						clear_value();
     					}
 
@@ -16610,8 +16772,9 @@ var app = (function () {
     		if ($$self.$$.dirty & /*value_idx, parts_dict, footprints, footprint_idx, values*/ 527) {
     			 {
     				// console.log('value_idx', value_idx)
-    				console.log("value_idx changed?");
+    				console.log("value_idx changed?", value_idx);
 
+    				// disabled = footprint_idx < 0 || value_idx < 0;
     				if (value_idx > -1) {
     					//console.log(parts_dict[footprints[footprint_idx]][values[value_idx]])
     					$$invalidate(4, fields.LCSC = parts_dict[footprints[footprint_idx]][values[value_idx]].LCSC, fields);
@@ -16658,228 +16821,6 @@ var app = (function () {
     	}
     }
 
-    function load_sheet(raw) {
-    	console.log('parse_sheet');
-    	let contents = [];
-
-    	let parse_block = 0;
-    	let block = {};
-    	let item_index = 0;
-    	function process_line(line) {
-    		// console.log(line)
-    		var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
-    		// console.log(pieces)
-
-    		if (parse_block==0) {
-    			// console.log(pieces[0])
-    			switch(pieces[0]) {
-    				case 'EESchema':
-    				case 'Connection':
-    				case 'NoConn':
-    				case '$EndSCHEMATC':
-    					parse_block = 0;
-    					break;
-    				case 'LIBS':  // not sure how to process this
-    					console.log('got ', pieces[0]);
-    					break;
-    				case 'EELAYER':
-    				case 'Text':
-    				case 'Wire':
-    				case 'Entry':
-    					parse_block = 1;
-    					break;
-    				case '$Descr':
-    				case '$Sheet':
-    				case '$Comp':
-    				case '$Bitmap':
-    					parse_block = 2;
-    					break;
-    				default:
-    					console.log('not recognized', pieces[0]);
-    					parse_block = -1;
-    			}
-    			if (parse_block >= 0) {  // handle recognized parts
-    				// console.log(pieces[0])
-    				block = {'type':pieces[0], 'lines': [line], 'idx': item_index};
-    				if (parse_block == 0) contents.push(block);
-    				item_index += 1;
-    			} else parse_block = 0; // done handling not recognized
-    		} else if (parse_block ==1 ) {
-    			// append line to block
-    			block['lines'].push(line);
-    			parse_block = 0;
-    			contents.push(block);
-    		} else {
-    			block['lines'].push(line);
-    			// check if this is the last line of the block
-    			if (/^\$End/.test(line)) {
-    				parse_block = 0;
-    				contents.push(block);
-    			}
-    		}
-    	}
-    	for (let line of raw.split(/\r?\n/)) {
-    		// console.log(line.length, line)
-    		if (line.length>0) process_line(line);
-    	}
-    	console.log('done');
-    	return contents
-    }
-    function process_sheet_content(contents, sheets_to_update) {
-    	// let grouped = {}
-    	console.log('mark components');
-    	// mark items which are components
-    	for (let item of contents) {
-    		if (item['type']=='$Comp') {
-    			for (let line of item['lines']) {
-    				if (/^F 0/.test(line)) {
-    					var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
-    					if (!pieces[2].startsWith('"#')) {
-    						// console.log(item['idx'], line)
-    						item['component'] = true;
-    					}
-    				}
-    			}
-    		}
-    		if (item['type']=='$Sheet') {
-    			console.log('found sheet');
-    			// need to consolidate these
-    			for (let line of item['lines']) {
-    				// console.log(line)
-    				if (/^F0/.test(line)) {
-    					var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
-    					console.log('sheet ID', pieces[1]);
-    				} else if (/^F1/.test(line)) {
-    					var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
-    					const name = pieces[1].match(/"(.*?)"/)[1];
-    					console.log('sheet filename', pieces[1]);
-    					const index = sheets_to_update.indexOf(name);
-    					if (index==-1) sheets_to_update.push(name);
-    				}
-    			}
-    		}
-    	}
-    }
-
-
-    let required_fields = ['MPN', 'LCSC'];
-    function add_field(name, lines) {
-    	let num_f = 0;
-    	let newline;
-    	for (let line of lines) {
-    		let pieces = line.split(' ');
-    		if (pieces[0]=='F') num_f++;
-    		if (pieces[1]=='3') newline = line;
-    	}
-    	// fix newline which is a copy of field #3 as a template
-    	let pieces = newline.match(/(?:[^\s"]+|"[^"]*")+/g);
-    	pieces[1] = num_f;
-    	pieces[2] = '""';
-    	newline = pieces.join(' ');
-    	newline += ' "'+name+'"';
-    	// console.log('add_field, num_f', num_f)
-    	const index = lines.findIndex(elt => elt.startsWith("F "+(num_f-1)));
-    	// console.log('index', index, lines[index])
-    	lines.splice(index+1, 0, newline);
-    	// console.log('add_field', lines)
-    	return lines
-    }
-    function add_to_group(contents, grouped) {
-    	for (let item of contents) {
-    		if (item['component']) {
-    			let value, footprint;
-    			let fields_to_add = [...required_fields];
-    			let extra_fields = {};
-    			fields_to_add.forEach(elt => extra_fields[elt] = '');
-    			let references = [];
-    			for (let line of item['lines']) {
-    				var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
-    				if (pieces[0]=='F') ;
-    				if (/^AR/.test(line)) {
-    					const ref = pieces[2].match(/"(.*?)"/)[1];
-    					if (!ref.endsWith('?')) {
-    						const index = references.indexOf(ref);
-    						if (index==-1) references.push(ref);
-    					}
-    				}
-    				if (/^F 0 /.test(line)) {
-    					const ref = pieces[2].match(/"(.*?)"/)[1];
-    					if (!ref.endsWith('?')) {
-    						const index = references.indexOf(ref);
-    						if (index==-1) references.push(ref);
-    					}
-    				}
-    				if (/^F 1 /.test(line)) {
-    					value = pieces[2].match(/"(.*?)"/)[1];
-    					// console.log(value)
-    				}
-    				if (/^F 2 /.test(line)) {
-    					footprint = pieces[2].match(/"(.*?)"/)[1];
-    				}
-    				if (pieces.length==11) {
-    					let field = pieces[10].match(/"(.*?)"/)[1];
-    					if (field in extra_fields) {
-    						// console.log("has", field)
-    						extra_fields[field] = pieces[2].match(/"(.*?)"/)[1];
-    						const index = fields_to_add.indexOf(field);
-    						if (index>-1) fields_to_add.splice(index, 1);  // remove from list to add
-    						// console.log('extra_fields left', fields_to_add)
-    					}
-    				}
-    			}
-    			// console.log('fields to add', fields_to_add);
-    			fields_to_add.forEach( elt => {
-    				item.lines = add_field(elt, item.lines);
-    			});
-
-    			if (grouped[footprint]) { // footprint is already there
-    				if(grouped[footprint][value]) { // value is already there
-    					grouped[footprint][value]['designator'].push(...references);
-    				} else { // value is not yet there
-    					grouped[footprint][value]={'designator':references};
-    					grouped[footprint][value] = {...grouped[footprint][value], ...extra_fields};
-    					// grouped[footprint][value].lcsc = extra_fields.lcsc
-    					// grouped[footprint][value].mpn = extra_fields.mpn
-    				}
-    			} else {  // footprint is not yet there
-    				grouped[footprint] = {};
-    				grouped[footprint][value] = {'designator': references};
-    				grouped[footprint][value] = {...grouped[footprint][value], ...extra_fields};
-    				// grouped[footprint][value].lcsc = extra_fields.lcsc
-    				// grouped[footprint][value].mpn = extra_fields.mpn
-    			}
-    			// console.log(designator, value, footprint)
-    			// console.log(item)
-    		}
-    	}
-    }
-    function get_all_sheets(files, start_idx) {
-    	console.log('get_all_sheets, files',files);
-    	let grouped = {};
-    	let content = load_sheet(files[start_idx].raw);
-    	// console.log('content', content);
-    	files[start_idx].content = content;
-    	let sheets_to_process = [];
-    	process_sheet_content(content, sheets_to_process);
-    	add_to_group(content, grouped);
-    	console.log('sheets_to_update', sheets_to_process);
-    	while (sheets_to_process.length>0) {
-    		// const new_name = path.dirname(filename)+path.sep+sheets_to_update.pop()
-    		const new_name = sheets_to_process.pop();
-    		console.log('path', new_name);
-    		let file = files.filter(elt => elt.name==new_name)[0];
-    		content = load_sheet(file.raw);
-    		file.content = content;
-    		process_sheet_content(content, sheets_to_process);
-    		add_to_group(content, grouped);
-    		// content = load_sheet(new_name);
-    		// process_sheet_content(content, sheets_to_update);
-    		// console.log('sheets_to_update', sheets_to_update)
-    	}
-    	// console.log(grouped)
-    	return grouped
-    }
-
     function downloadBlob(blob, name = 'file.txt') {
       // Convert your blob into a Blob URL (a special url that points to an object in the browser's memory)
       const blobUrl = URL.createObjectURL(blob);
@@ -16919,8 +16860,8 @@ var app = (function () {
     const { console: console_1$2 } = globals;
     const file$7 = "src/App.svelte";
 
-    // (89:0) {#if sch_idx>=0}
-    function create_if_block$6(ctx) {
+    // (102:0) {#if sch_idx>=0}
+    function create_if_block$7(ctx) {
     	let editor;
     	let t0;
     	let br;
@@ -16936,6 +16877,8 @@ var app = (function () {
     	let button4;
     	let t11;
     	let button5;
+    	let t13;
+    	let button6;
     	let current;
     	let mounted;
     	let dispose;
@@ -16964,13 +16907,17 @@ var app = (function () {
     			t11 = space();
     			button5 = element("button");
     			button5.textContent = "Save all parts to database / csv";
-    			add_location(br, file$7, 90, 0, 2856);
-    			add_location(button0, file$7, 91, 0, 2861);
-    			add_location(button1, file$7, 92, 0, 2908);
-    			add_location(button2, file$7, 93, 0, 2946);
-    			add_location(button3, file$7, 96, 0, 3016);
-    			add_location(button4, file$7, 99, 0, 3089);
-    			add_location(button5, file$7, 102, 0, 3152);
+    			t13 = space();
+    			button6 = element("button");
+    			button6.textContent = "update raw";
+    			add_location(br, file$7, 103, 0, 3279);
+    			add_location(button0, file$7, 104, 0, 3284);
+    			add_location(button1, file$7, 105, 0, 3331);
+    			add_location(button2, file$7, 106, 0, 3369);
+    			add_location(button3, file$7, 109, 0, 3439);
+    			add_location(button4, file$7, 112, 0, 3512);
+    			add_location(button5, file$7, 115, 0, 3575);
+    			add_location(button6, file$7, 118, 0, 3658);
     		},
     		m: function mount(target, anchor) {
     			mount_component(editor, target, anchor);
@@ -16988,6 +16935,8 @@ var app = (function () {
     			insert_dev(target, button4, anchor);
     			insert_dev(target, t11, anchor);
     			insert_dev(target, button5, anchor);
+    			insert_dev(target, t13, anchor);
+    			insert_dev(target, button6, anchor);
     			current = true;
 
     			if (!mounted) {
@@ -16997,7 +16946,8 @@ var app = (function () {
     					listen_dev(button2, "click", /*log_json*/ ctx[4], false, false, false),
     					listen_dev(button3, "click", lookup_part, false, false, false),
     					listen_dev(button4, "click", /*download*/ ctx[6], false, false, false),
-    					listen_dev(button5, "click", /*parts_to_database*/ ctx[5], false, false, false)
+    					listen_dev(button5, "click", /*parts_to_database*/ ctx[5], false, false, false),
+    					listen_dev(button6, "click", /*update_files*/ ctx[7], false, false, false)
     				];
 
     				mounted = true;
@@ -17029,6 +16979,8 @@ var app = (function () {
     			if (detaching) detach_dev(button4);
     			if (detaching) detach_dev(t11);
     			if (detaching) detach_dev(button5);
+    			if (detaching) detach_dev(t13);
+    			if (detaching) detach_dev(button6);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -17036,9 +16988,9 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$6.name,
+    		id: create_if_block$7.name,
     		type: "if",
-    		source: "(89:0) {#if sch_idx>=0}",
+    		source: "(102:0) {#if sch_idx>=0}",
     		ctx
     	});
 
@@ -17056,11 +17008,11 @@ var app = (function () {
     	let current;
 
     	function getsch_files_binding(value) {
-    		/*getsch_files_binding*/ ctx[7].call(null, value);
+    		/*getsch_files_binding*/ ctx[8].call(null, value);
     	}
 
     	function getsch_sch_idx_binding(value) {
-    		/*getsch_sch_idx_binding*/ ctx[8].call(null, value);
+    		/*getsch_sch_idx_binding*/ ctx[9].call(null, value);
     	}
 
     	let getsch_props = {};
@@ -17077,7 +17029,7 @@ var app = (function () {
     	binding_callbacks.push(() => bind(getsch, "files", getsch_files_binding));
     	binding_callbacks.push(() => bind(getsch, "sch_idx", getsch_sch_idx_binding));
     	getsch.$on("selected", /*handleSelected*/ ctx[2]);
-    	let if_block = /*sch_idx*/ ctx[0] >= 0 && create_if_block$6(ctx);
+    	let if_block = /*sch_idx*/ ctx[0] >= 0 && create_if_block$7(ctx);
 
     	const block = {
     		c: function create() {
@@ -17088,7 +17040,7 @@ var app = (function () {
     			t2 = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			add_location(h2, file$7, 86, 0, 2714);
+    			add_location(h2, file$7, 99, 0, 3137);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -17127,7 +17079,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$6(ctx);
+    					if_block = create_if_block$7(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
@@ -17209,9 +17161,12 @@ var app = (function () {
     	function handleSelected(event) {
     		console.log("file selected", event);
     		console.log("sch_idx", sch_idx, "files", files);
-    		grouped = get_all_sheets(files, sch_idx);
-    		console.log("handleSelected, grouped ", grouped);
-    		grouped_data.set(grouped);
+    		let results = get_all_sheets(files, sch_idx);
+
+    		// console.log(results)
+    		// console.log('handleSelected, grouped ', grouped)
+    		grouped_data.set(results);
+
     		loaded = true;
     	}
 
@@ -17220,25 +17175,20 @@ var app = (function () {
     	}
 
     	async function zip() {
-    		// Destructure the one-element array.
-    		// [fileHandle] = await window.showOpenFilePicker();
-    		// Do something with the file handle.
-    		// let jsonBlob = new Blob(['{"name": "test"}'])
-    		// downloadBlob(jsonBlob, 'myfile.json');
-    		new Blob(["Hello, world!"], { type: "text/plain;charset=utf-8" });
-
-    		// saveAs(blob, "hello world.txt");
     		var zip = new jszip();
-
     		var folder = zip.folder("files");
 
     		for (let file of files) {
-    			folder.file(file.name, file.raw);
+    			let updated = update_raw(file);
+
+    			if (updated) {
+    				// console.log(file.name, updated);
+    				folder.file(file.name, file.raw);
+    			}
     		}
 
     		zip.generateAsync({ type: "blob" }).then(function (content) {
-    			// see FileSaver.js
-    			FileSaver_min.saveAs(content, "example.zip");
+    			FileSaver_min.saveAs(content, "files.zip");
     		});
     	}
 
@@ -17274,6 +17224,15 @@ var app = (function () {
     		downloadBlob(blob, "tweaked.json");
     	}
 
+    	function update_files() {
+    		console.log("grouped_data files", $grouped_data["files"]);
+
+    		for (const file of $grouped_data["files"]) {
+    			let updated = update_raw(file);
+    			console.log("update raw", file.name, updated);
+    		}
+    	}
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
@@ -17295,6 +17254,7 @@ var app = (function () {
     		GetSch,
     		Editor,
     		get_all_sheets,
+    		update_raw,
     		grouped_data,
     		downloadBlob,
     		saveAs: FileSaver_min.saveAs,
@@ -17312,6 +17272,7 @@ var app = (function () {
     		parts_to_database,
     		download,
     		open: open$1,
+    		update_files,
     		$grouped_data
     	});
 
@@ -17339,6 +17300,7 @@ var app = (function () {
     		log_json,
     		parts_to_database,
     		download,
+    		update_files,
     		getsch_files_binding,
     		getsch_sch_idx_binding
     	];
