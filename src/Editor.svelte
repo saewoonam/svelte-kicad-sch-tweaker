@@ -93,11 +93,14 @@
     }
     if (event.srcElement.id == "Value") {
       console.log('old value', values[value_idx], 'new', newkey)
-      // console.log(parts_dict[footprints[footprint_idx]])
-      parts_dict[footprints[footprint_idx]] = renameProp(values[value_idx], newkey, parts_dict[footprints[footprint_idx]])
-      // console.log(parts_dict[footprints[footprint_idx]])
-      values = Object.keys(parts_dict[footprints[footprint_idx]])
-      value_idx = values.indexOf(newkey)
+      if (newkey in parts_dict[footprints[footprint_idx]]) {
+        // merge
+        alert("Merge is not implemented")
+      } else { // new value, create object
+        parts_dict[footprints[footprint_idx]] = renameProp(values[value_idx], newkey, parts_dict[footprints[footprint_idx]])
+        values = Object.keys(parts_dict[footprints[footprint_idx]])
+        value_idx = values.indexOf(newkey)
+      }
     }
   }
   $: { 

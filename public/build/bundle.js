@@ -15955,7 +15955,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (148:4) {#each Array.from(footprints.keys()) as id}
+    // (151:4) {#each Array.from(footprints.keys()) as id}
     function create_each_block_1$1(ctx) {
     	let option;
     	let t0_value = /*footprints*/ ctx[0][/*id*/ ctx[19]] + "";
@@ -15970,7 +15970,7 @@ var app = (function () {
     			t1 = space();
     			option.__value = option_value_value = /*id*/ ctx[19];
     			option.value = option.__value;
-    			add_location(option, file$6, 148, 4, 5094);
+    			add_location(option, file$6, 151, 4, 5151);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -15994,14 +15994,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(148:4) {#each Array.from(footprints.keys()) as id}",
+    		source: "(151:4) {#each Array.from(footprints.keys()) as id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (158:4) {#each Array.from(values.keys()) as id}
+    // (161:4) {#each Array.from(values.keys()) as id}
     function create_each_block$1(ctx) {
     	let option;
     	let t0_value = /*values*/ ctx[3][/*id*/ ctx[19]] + "";
@@ -16016,7 +16016,7 @@ var app = (function () {
     			t1 = space();
     			option.__value = option_value_value = /*id*/ ctx[19];
     			option.value = option.__value;
-    			add_location(option, file$6, 158, 4, 5392);
+    			add_location(option, file$6, 161, 4, 5449);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -16040,7 +16040,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(158:4) {#each Array.from(values.keys()) as id}",
+    		source: "(161:4) {#each Array.from(values.keys()) as id}",
     		ctx
     	});
 
@@ -16164,36 +16164,36 @@ var app = (function () {
     			input4 = element("input");
     			attr_dev(label0, "for", "footprint_select");
     			attr_dev(label0, "class", "fields svelte-3g7ow9");
-    			add_location(label0, file$6, 145, 2, 4910);
+    			add_location(label0, file$6, 148, 2, 4967);
     			attr_dev(select0, "id", "footprint_select");
     			attr_dev(select0, "size", "5");
     			if (/*footprint_idx*/ ctx[1] === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[11].call(select0));
-    			add_location(select0, file$6, 146, 2, 4976);
+    			add_location(select0, file$6, 149, 2, 5033);
     			attr_dev(div0, "class", "centered-select grouped svelte-3g7ow9");
-    			add_location(div0, file$6, 143, 0, 4869);
+    			add_location(div0, file$6, 146, 0, 4926);
     			attr_dev(label1, "for", "value_select");
     			attr_dev(label1, "class", "fields svelte-3g7ow9");
-    			add_location(label1, file$6, 155, 2, 5224);
+    			add_location(label1, file$6, 158, 2, 5281);
     			attr_dev(select1, "id", "value_select");
     			attr_dev(select1, "size", "5");
     			if (/*value_idx*/ ctx[2] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[12].call(select1));
-    			add_location(select1, file$6, 156, 2, 5287);
+    			add_location(select1, file$6, 159, 2, 5344);
     			attr_dev(div1, "class", "centered-select grouped svelte-3g7ow9");
-    			add_location(div1, file$6, 154, 0, 5184);
+    			add_location(div1, file$6, 157, 0, 5241);
     			attr_dev(label2, "class", "fields svelte-3g7ow9");
     			attr_dev(label2, "for", "refs");
-    			add_location(label2, file$6, 166, 4, 5511);
+    			add_location(label2, file$6, 169, 4, 5568);
     			attr_dev(input0, "id", "refs");
     			attr_dev(input0, "type", "text");
     			input0.value = input0_value_value = /*fields*/ ctx[4].refs;
     			input0.readOnly = "readonly";
     			set_style(input0, "background", "lightgrey");
-    			add_location(input0, file$6, 167, 4, 5569);
+    			add_location(input0, file$6, 170, 4, 5626);
     			attr_dev(p0, "class", "grouped svelte-3g7ow9");
-    			add_location(p0, file$6, 165, 2, 5486);
+    			add_location(p0, file$6, 168, 2, 5543);
     			attr_dev(label3, "class", "fields svelte-3g7ow9");
     			attr_dev(label3, "for", "Footprint");
-    			add_location(label3, file$6, 170, 4, 5703);
+    			add_location(label3, file$6, 173, 4, 5760);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "class", "fields-input");
     			attr_dev(input1, "id", "Footprint");
@@ -16202,12 +16202,12 @@ var app = (function () {
     			? /*footprints*/ ctx[0][/*footprint_idx*/ ctx[1]]
     			: "";
 
-    			add_location(input1, file$6, 171, 4, 5764);
+    			add_location(input1, file$6, 174, 4, 5821);
     			attr_dev(p1, "class", "grouped svelte-3g7ow9");
-    			add_location(p1, file$6, 169, 2, 5679);
+    			add_location(p1, file$6, 172, 2, 5736);
     			attr_dev(label4, "class", "fields svelte-3g7ow9");
     			attr_dev(label4, "for", "Value");
-    			add_location(label4, file$6, 175, 4, 5968);
+    			add_location(label4, file$6, 178, 4, 6025);
     			attr_dev(input2, "type", "text");
     			attr_dev(input2, "id", "Value");
 
@@ -16215,30 +16215,30 @@ var app = (function () {
     			? /*values*/ ctx[3][/*value_idx*/ ctx[2]]
     			: "";
 
-    			add_location(input2, file$6, 176, 4, 6021);
+    			add_location(input2, file$6, 179, 4, 6078);
     			attr_dev(p2, "class", "grouped svelte-3g7ow9");
-    			add_location(p2, file$6, 174, 2, 5944);
+    			add_location(p2, file$6, 177, 2, 6001);
     			attr_dev(label5, "class", "fields svelte-3g7ow9");
     			attr_dev(label5, "for", "LCSC");
-    			add_location(label5, file$6, 180, 4, 6183);
+    			add_location(label5, file$6, 183, 4, 6240);
     			attr_dev(input3, "type", "text");
     			attr_dev(input3, "id", "LCSC");
     			input3.value = input3_value_value = /*fields*/ ctx[4].LCSC;
-    			add_location(input3, file$6, 181, 4, 6234);
+    			add_location(input3, file$6, 184, 4, 6291);
     			attr_dev(p3, "class", "grouped svelte-3g7ow9");
-    			add_location(p3, file$6, 179, 2, 6159);
+    			add_location(p3, file$6, 182, 2, 6216);
     			attr_dev(label6, "class", "fields svelte-3g7ow9");
     			attr_dev(label6, "for", "MPN");
-    			add_location(label6, file$6, 184, 4, 6340);
+    			add_location(label6, file$6, 187, 4, 6397);
     			attr_dev(input4, "type", "text");
     			attr_dev(input4, "id", "MPN");
     			input4.value = input4_value_value = /*fields*/ ctx[4].MPN;
-    			add_location(input4, file$6, 185, 4, 6388);
+    			add_location(input4, file$6, 188, 4, 6445);
     			attr_dev(p4, "class", "grouped svelte-3g7ow9");
-    			add_location(p4, file$6, 183, 2, 6316);
-    			add_location(div2, file$6, 164, 0, 5478);
+    			add_location(p4, file$6, 186, 2, 6373);
+    			add_location(div2, file$6, 167, 0, 5535);
     			attr_dev(div3, "class", "card");
-    			add_location(div3, file$6, 142, 0, 4850);
+    			add_location(div3, file$6, 145, 0, 4907);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16517,13 +16517,16 @@ var app = (function () {
     		if (event.srcElement.id == "Value") {
     			console.log("old value", values[value_idx], "new", newkey);
 
-    			// console.log(parts_dict[footprints[footprint_idx]])
-    			$$invalidate(9, parts_dict[footprints[footprint_idx]] = renameProp(values[value_idx], newkey, parts_dict[footprints[footprint_idx]]), parts_dict);
+    			if (newkey in parts_dict[footprints[footprint_idx]]) {
+    				// merge
+    				alert("Merge is not implemented");
+    			} else {
+    				// new value, create object
+    				$$invalidate(9, parts_dict[footprints[footprint_idx]] = renameProp(values[value_idx], newkey, parts_dict[footprints[footprint_idx]]), parts_dict);
 
-    			// console.log(parts_dict[footprints[footprint_idx]])
-    			$$invalidate(3, values = Object.keys(parts_dict[footprints[footprint_idx]]));
-
-    			$$invalidate(2, value_idx = values.indexOf(newkey));
+    				$$invalidate(3, values = Object.keys(parts_dict[footprints[footprint_idx]]));
+    				$$invalidate(2, value_idx = values.indexOf(newkey));
+    			}
     		}
     	}
 
