@@ -2,7 +2,7 @@
   import JSZip from './jszip.js'
   import GetSch from "./GetSch.svelte"
   import Editor from "./Editor.svelte"
-  import {get_all_sheets} from "./kicad.js"
+  import {get_all_sheets, update_raw} from "./kicad.js"
   import { grouped_data } from './store.js';
   import {downloadBlob} from './downloadBlob.js'
   import {saveAs} from 'file-saver'
@@ -25,11 +25,13 @@
   }}
    */
     function handleSelected(event) {
+      let ref_map;
       console.log('file selected', event)
       console.log('sch_idx', sch_idx, 'files', files)
-      grouped = get_all_sheets(files, sch_idx)
-      console.log('handleSelected, grouped ', grouped)
-      grouped_data.set(grouped)
+      let results = get_all_sheets(files, sch_idx)
+      // console.log(results)
+      // console.log('handleSelected, grouped ', grouped)
+      grouped_data.set(results)
       loaded = true;
     }
   function status() {
@@ -37,23 +39,18 @@
   } 
   $: {status()}
   async function zip ()  {
-    // Destructure the one-element array.
-    // [fileHandle] = await window.showOpenFilePicker();
-    // Do something with the file handle.
-
-    // let jsonBlob = new Blob(['{"name": "test"}'])
-    // downloadBlob(jsonBlob, 'myfile.json');
-    var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
-    // saveAs(blob, "hello world.txt");
     var zip = new JSZip();
     var folder = zip.folder("files")
     for (let file of files) {
-      folder.file(file.name, file.raw)
+      let updated = update_raw(file)
+      if (updated) {
+        // console.log(file.name, updated);
+        folder.file(file.name, file.raw)
+      }
     }
     zip.generateAsync({type:"blob"})
       .then(function(content) {
-        // see FileSaver.js
-        saveAs(content, "example.zip");
+        saveAs(content, "files.zip");
       });
   }
   function log_json() {
@@ -82,7 +79,23 @@
   function open() {
     let myWindow = window.open("?", "", "width=500, height=500");  // Opens a new window
   }
+  function update_files() {
+    console.log('grouped_data files', $grouped_data['files'])
+    for (const file of $grouped_data['files']) {
+      let updated = update_raw(file)
+      console.log('update raw', file.name, updated)
+    }
+  }
+  /*  random file saving stuff
+    // Destructure the one-element array.
+    // [fileHandle] = await window.showOpenFilePicker();
+    // Do something with the file handle.
 
+    // let jsonBlob = new Blob(['{"name": "test"}'])
+    // downloadBlob(jsonBlob, 'myfile.json');
+    var blob = new Blob(["Hello, world!"], {type: "text/plain;charset=utf-8"});
+    // saveAs(blob, "hello world.txt");
+  */
 </script>
 <h2>Kicad schematic tweaker</h2>
 <GetSch bind:files={files} bind:sch_idx={sch_idx} on:selected={handleSelected}/>
@@ -103,5 +116,6 @@
 <button on:click={parts_to_database}>
   Save all parts to database / csv
 </button>
+<button on:click={update_files}> update raw </button>
 {/if}
 

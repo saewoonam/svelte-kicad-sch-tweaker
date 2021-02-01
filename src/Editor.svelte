@@ -1,17 +1,17 @@
 <script>
-  import test_parts from  './_parts.json';
+  // import test_parts from  './_parts.json';
   import { onDestroy } from 'svelte';
   import { grouped_data } from './store.js';
   import { Input, Card } from 'svelte-chota';
+  import { update_field } from './kicad.js';
 
-  let parts_dict = test_parts;
+  let parts_dict;
+  //= test_parts;
   console.log('Editor, parts_dict', parts_dict)
-  let footprints = Object.keys(parts_dict)
+  let ref_map;
+  let footprints = []; // = Object.keys(parts_dict)
   let changed = [];
 
-  // let dialog = this.fetch('dialog')
-
-  // let dialog = 'not clicked yet'
   let footprint_idx=-1;
   let old_footprint_idx = -1;
   let value_idx;
@@ -24,13 +24,16 @@
     ...others
   })
   const unsubscribe = grouped_data.subscribe(value => {
-    parts_dict = value;
-    //console.log("data changed, parts_dict", parts_dict)
-    footprints = Object.keys(parts_dict).filter(elt => elt != 'filename')
-    //reset();
-    footprint_idx = -1;
-    values = []
-    value_idx = -1
+    // console.log('value in subscribe', value);
+    parts_dict = value['grouped'];
+    if (parts_dict) {
+      footprints = Object.keys(parts_dict).filter(elt => elt != 'filename');
+      footprint_idx = -1;
+      values = []
+      value_idx = -1
+      ref_map = value['ref_map']
+      console.log('ref_map', ref_map)
+    }
   });
   onDestroy(unsubscribe);
 
@@ -45,11 +48,13 @@
   function set_lcsc(event) {
     const newvalue = event.srcElement.value
     console.log('blur lcsc', newvalue)
+    console.log('grouped_data', $grouped_data)
+    console.log('parts_dict', parts_dict[footprints[footprint_idx]])
     parts_dict[footprints[footprint_idx]][values[value_idx]].LCSC = newvalue;
   }
   function set_mpn(event) {
     const newvalue = event.srcElement.value
-    console.log('blur lcsc', newvalue)
+    console.log('blur mpn', newvalue)
     parts_dict[footprints[footprint_idx]][values[value_idx]].MPN = newvalue;
     console.log('blur mpn')
   }
@@ -81,7 +86,6 @@
         parts_dict[newkey][values[value_idx]] = parts_dict[oldkey][values[value_idx]]
         delete parts_dict[oldkey][values[value_idx]]
       }
-      // parts_dict = renameProp(footprints[footprint_idx], newkey, parts_dict)
       console.log('old keys', footprints);
       footprints = Object.keys(parts_dict).filter(elt => elt != 'filename')
       console.log('new keys', footprints);
@@ -103,14 +107,15 @@
       }
     }
   }
+  $: {
+    // disabled = footprint_idx < 0 || value_idx < 0;
+    console.log('disabled, footprint, value idx', footprint_idx, value_idx);
+  }
   $: { 
     console.log('footprint_idx chnage?', footprint_idx);   
     if (footprint_idx>=0) {
       if (old_footprint_idx != footprint_idx) {
-        // console.log('old, new', old_footprint_idx, footprint_idx)
         values = Object.keys(parts_dict[footprints[footprint_idx]])
-        // console.log(values)
-        // ref_idx = -1;
         clear_value();
       }
       old_footprint_idx = footprint_idx;
@@ -118,7 +123,8 @@
   }
   $: {
     // console.log('value_idx', value_idx)
-    console.log('value_idx changed?')
+    console.log('value_idx changed?', value_idx)
+    // disabled = footprint_idx < 0 || value_idx < 0;
     if (value_idx>-1) {
       //console.log(parts_dict[footprints[footprint_idx]][values[value_idx]])
       fields.LCSC = parts_dict[footprints[footprint_idx]][values[value_idx]].LCSC
@@ -148,11 +154,13 @@
 
   <label for="footprint_select" class="fields" >Footprint</label>
   <select id="footprint_select" size=5 bind:value={footprint_idx} >
-    {#each Array.from(footprints.keys()) as id}
-    <option value = {id}>
-      {footprints[id]}
-    </option>
-    {/each}
+    {#if footprints}
+      {#each Array.from(footprints.keys()) as id}
+        <option value = {id}>
+          {footprints[id]}
+        </option>
+      {/each}
+    {/if}
   </select>
 </div>
 <div class="centered-select grouped">
@@ -178,15 +186,15 @@
   <p class="grouped">
     <label class="fields" for="Value">Value </label>
     <input type="text" id="Value" value= {values[value_idx] ?
-           values[value_idx] : ''} on:blur={set} on:change={change}>
+      values[value_idx] : ''} on:blur={set} on:change={change} disabled={value_idx<0}>
   </p>  
   <p class="grouped">
     <label class="fields" for="LCSC">LCSC </label>
-    <input type="text" id="LCSC" value={fields.LCSC} on:change={set_lcsc}>
+    <input type="text" id="LCSC" value={fields.LCSC} on:change={set_lcsc} disabled={value_idx<0 || footprint_idx<0}>
   </p>  
   <p class="grouped">
     <label class="fields" for="MPN">MPN</label>
-    <input type="text" id="MPN" value={fields.MPN} on:change={set_mpn}>
+    <input type="text" id="MPN" value={fields.MPN} on:change={set_mpn} disabled={value_idx<0 || footprint_idx<0}>
   </p>
 </div>
 </div>
