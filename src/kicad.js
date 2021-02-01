@@ -132,10 +132,12 @@ export function update_field(name, value, lines) {
     let line_number = 0;
     let pieces;
     let match_line = -1;
+    console.log('update_field called', name, value);
     for (let line of lines) {
         pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+        // console.log(pieces.length, pieces)
         if (pieces.length==11) { // found custom fields look for name
-            if (pieces[10]==name) {
+            if (pieces[10].match(/"(.*?)"/)[1]==name) {
                 found = true;
                 break;
             }

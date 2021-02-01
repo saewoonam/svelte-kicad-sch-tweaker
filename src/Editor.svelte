@@ -47,16 +47,29 @@
   }
   function set_lcsc(event) {
     const newvalue = event.srcElement.value
+    let fieldname = 'LCSC'
     console.log('blur lcsc', newvalue)
     console.log('grouped_data', $grouped_data)
     console.log('parts_dict', parts_dict[footprints[footprint_idx]])
-    parts_dict[footprints[footprint_idx]][values[value_idx]].LCSC = newvalue;
+    set_field(fieldname, newvalue)
+  }
+  function set_field(fieldname, newvalue) {
+    parts_dict[footprints[footprint_idx]][values[value_idx]][fieldname] = newvalue;
+    let references = parts_dict[footprints[footprint_idx]][values[value_idx]].designator
+    for (const ref of references) {
+      const map = $grouped_data['ref_map'].filter(elt=>elt[0]==ref)[0]
+      console.log(map)
+      let file = $grouped_data['files'].filter(elt=>elt.name==map[1])[0]
+      update_field(fieldname, newvalue, file.content[map[2]].lines)
+      console.log('content', file.content[map[2]].lines)
+    }
   }
   function set_mpn(event) {
     const newvalue = event.srcElement.value
     console.log('blur mpn', newvalue)
     parts_dict[footprints[footprint_idx]][values[value_idx]].MPN = newvalue;
     console.log('blur mpn')
+    set_field('MPN', newvalue)
   }
   function set(event) {
     console.log('set', event)

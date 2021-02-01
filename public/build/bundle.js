@@ -15868,10 +15868,12 @@ var app = (function () {
         let found = false;
         let line_number = 0;
         let pieces;
+        console.log('update_field called', name, value);
         for (let line of lines) {
             pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+            // console.log(pieces.length, pieces)
             if (pieces.length==11) { // found custom fields look for name
-                if (pieces[10]==name) {
+                if (pieces[10].match(/"(.*?)"/)[1]==name) {
                     found = true;
                     break;
                 }
@@ -16016,17 +16018,17 @@ var app = (function () {
 
     function get_each_context$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1$1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[21] = list[i];
+    	child_ctx[22] = list[i];
     	return child_ctx;
     }
 
-    // (157:4) {#if footprints}
+    // (170:4) {#if footprints}
     function create_if_block$6(ctx) {
     	let each_1_anchor;
     	let each_value_1 = Array.from(/*footprints*/ ctx[0].keys());
@@ -16087,17 +16089,17 @@ var app = (function () {
     		block,
     		id: create_if_block$6.name,
     		type: "if",
-    		source: "(157:4) {#if footprints}",
+    		source: "(170:4) {#if footprints}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (158:6) {#each Array.from(footprints.keys()) as id}
+    // (171:6) {#each Array.from(footprints.keys()) as id}
     function create_each_block_1$1(ctx) {
     	let option;
-    	let t0_value = /*footprints*/ ctx[0][/*id*/ ctx[21]] + "";
+    	let t0_value = /*footprints*/ ctx[0][/*id*/ ctx[22]] + "";
     	let t0;
     	let t1;
     	let option_value_value;
@@ -16107,9 +16109,9 @@ var app = (function () {
     			option = element("option");
     			t0 = text(t0_value);
     			t1 = space();
-    			option.__value = option_value_value = /*id*/ ctx[21];
+    			option.__value = option_value_value = /*id*/ ctx[22];
     			option.value = option.__value;
-    			add_location(option, file$6, 158, 8, 5391);
+    			add_location(option, file$6, 171, 8, 5961);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -16117,9 +16119,9 @@ var app = (function () {
     			append_dev(option, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*footprints*/ 1 && t0_value !== (t0_value = /*footprints*/ ctx[0][/*id*/ ctx[21]] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*footprints*/ 1 && t0_value !== (t0_value = /*footprints*/ ctx[0][/*id*/ ctx[22]] + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*footprints*/ 1 && option_value_value !== (option_value_value = /*id*/ ctx[21])) {
+    			if (dirty & /*footprints*/ 1 && option_value_value !== (option_value_value = /*id*/ ctx[22])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -16133,17 +16135,17 @@ var app = (function () {
     		block,
     		id: create_each_block_1$1.name,
     		type: "each",
-    		source: "(158:6) {#each Array.from(footprints.keys()) as id}",
+    		source: "(171:6) {#each Array.from(footprints.keys()) as id}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (169:4) {#each Array.from(values.keys()) as id}
+    // (182:4) {#each Array.from(values.keys()) as id}
     function create_each_block$1(ctx) {
     	let option;
-    	let t0_value = /*values*/ ctx[3][/*id*/ ctx[21]] + "";
+    	let t0_value = /*values*/ ctx[3][/*id*/ ctx[22]] + "";
     	let t0;
     	let t1;
     	let option_value_value;
@@ -16153,9 +16155,9 @@ var app = (function () {
     			option = element("option");
     			t0 = text(t0_value);
     			t1 = space();
-    			option.__value = option_value_value = /*id*/ ctx[21];
+    			option.__value = option_value_value = /*id*/ ctx[22];
     			option.value = option.__value;
-    			add_location(option, file$6, 169, 4, 5709);
+    			add_location(option, file$6, 182, 4, 6279);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -16163,9 +16165,9 @@ var app = (function () {
     			append_dev(option, t1);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*values*/ 8 && t0_value !== (t0_value = /*values*/ ctx[3][/*id*/ ctx[21]] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*values*/ 8 && t0_value !== (t0_value = /*values*/ ctx[3][/*id*/ ctx[22]] + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*values*/ 8 && option_value_value !== (option_value_value = /*id*/ ctx[21])) {
+    			if (dirty & /*values*/ 8 && option_value_value !== (option_value_value = /*id*/ ctx[22])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -16179,7 +16181,7 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(169:4) {#each Array.from(values.keys()) as id}",
+    		source: "(182:4) {#each Array.from(values.keys()) as id}",
     		ctx
     	});
 
@@ -16295,36 +16297,36 @@ var app = (function () {
     			input4 = element("input");
     			attr_dev(label0, "for", "footprint_select");
     			attr_dev(label0, "class", "fields svelte-3g7ow9");
-    			add_location(label0, file$6, 154, 2, 5180);
+    			add_location(label0, file$6, 167, 2, 5750);
     			attr_dev(select0, "id", "footprint_select");
     			attr_dev(select0, "size", "5");
     			if (/*footprint_idx*/ ctx[1] === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[11].call(select0));
-    			add_location(select0, file$6, 155, 2, 5246);
+    			add_location(select0, file$6, 168, 2, 5816);
     			attr_dev(div0, "class", "centered-select grouped svelte-3g7ow9");
-    			add_location(div0, file$6, 152, 0, 5139);
+    			add_location(div0, file$6, 165, 0, 5709);
     			attr_dev(label1, "for", "value_select");
     			attr_dev(label1, "class", "fields svelte-3g7ow9");
-    			add_location(label1, file$6, 166, 2, 5541);
+    			add_location(label1, file$6, 179, 2, 6111);
     			attr_dev(select1, "id", "value_select");
     			attr_dev(select1, "size", "5");
     			if (/*value_idx*/ ctx[2] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[12].call(select1));
-    			add_location(select1, file$6, 167, 2, 5604);
+    			add_location(select1, file$6, 180, 2, 6174);
     			attr_dev(div1, "class", "centered-select grouped svelte-3g7ow9");
-    			add_location(div1, file$6, 165, 0, 5501);
+    			add_location(div1, file$6, 178, 0, 6071);
     			attr_dev(label2, "class", "fields svelte-3g7ow9");
     			attr_dev(label2, "for", "refs");
-    			add_location(label2, file$6, 177, 4, 5828);
+    			add_location(label2, file$6, 190, 4, 6398);
     			attr_dev(input0, "id", "refs");
     			attr_dev(input0, "type", "text");
     			input0.value = input0_value_value = /*fields*/ ctx[4].refs;
     			input0.readOnly = "readonly";
     			set_style(input0, "background", "lightgrey");
-    			add_location(input0, file$6, 178, 4, 5886);
+    			add_location(input0, file$6, 191, 4, 6456);
     			attr_dev(p0, "class", "grouped svelte-3g7ow9");
-    			add_location(p0, file$6, 176, 2, 5803);
+    			add_location(p0, file$6, 189, 2, 6373);
     			attr_dev(label3, "class", "fields svelte-3g7ow9");
     			attr_dev(label3, "for", "Footprint");
-    			add_location(label3, file$6, 181, 4, 6020);
+    			add_location(label3, file$6, 194, 4, 6590);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "class", "fields-input");
     			attr_dev(input1, "id", "Footprint");
@@ -16333,12 +16335,12 @@ var app = (function () {
     			? /*footprints*/ ctx[0][/*footprint_idx*/ ctx[1]]
     			: "";
 
-    			add_location(input1, file$6, 182, 4, 6081);
+    			add_location(input1, file$6, 195, 4, 6651);
     			attr_dev(p1, "class", "grouped svelte-3g7ow9");
-    			add_location(p1, file$6, 180, 2, 5996);
+    			add_location(p1, file$6, 193, 2, 6566);
     			attr_dev(label4, "class", "fields svelte-3g7ow9");
     			attr_dev(label4, "for", "Value");
-    			add_location(label4, file$6, 186, 4, 6285);
+    			add_location(label4, file$6, 199, 4, 6855);
     			attr_dev(input2, "type", "text");
     			attr_dev(input2, "id", "Value");
 
@@ -16347,32 +16349,32 @@ var app = (function () {
     			: "";
 
     			input2.disabled = input2_disabled_value = /*value_idx*/ ctx[2] < 0;
-    			add_location(input2, file$6, 187, 4, 6338);
+    			add_location(input2, file$6, 200, 4, 6908);
     			attr_dev(p2, "class", "grouped svelte-3g7ow9");
-    			add_location(p2, file$6, 185, 2, 6261);
+    			add_location(p2, file$6, 198, 2, 6831);
     			attr_dev(label5, "class", "fields svelte-3g7ow9");
     			attr_dev(label5, "for", "LCSC");
-    			add_location(label5, file$6, 191, 4, 6518);
+    			add_location(label5, file$6, 204, 4, 7088);
     			attr_dev(input3, "type", "text");
     			attr_dev(input3, "id", "LCSC");
     			input3.value = input3_value_value = /*fields*/ ctx[4].LCSC;
     			input3.disabled = input3_disabled_value = /*value_idx*/ ctx[2] < 0 || /*footprint_idx*/ ctx[1] < 0;
-    			add_location(input3, file$6, 192, 4, 6569);
+    			add_location(input3, file$6, 205, 4, 7139);
     			attr_dev(p3, "class", "grouped svelte-3g7ow9");
-    			add_location(p3, file$6, 190, 2, 6494);
+    			add_location(p3, file$6, 203, 2, 7064);
     			attr_dev(label6, "class", "fields svelte-3g7ow9");
     			attr_dev(label6, "for", "MPN");
-    			add_location(label6, file$6, 195, 4, 6717);
+    			add_location(label6, file$6, 208, 4, 7287);
     			attr_dev(input4, "type", "text");
     			attr_dev(input4, "id", "MPN");
     			input4.value = input4_value_value = /*fields*/ ctx[4].MPN;
     			input4.disabled = input4_disabled_value = /*value_idx*/ ctx[2] < 0 || /*footprint_idx*/ ctx[1] < 0;
-    			add_location(input4, file$6, 196, 4, 6765);
+    			add_location(input4, file$6, 209, 4, 7335);
     			attr_dev(p4, "class", "grouped svelte-3g7ow9");
-    			add_location(p4, file$6, 194, 2, 6693);
-    			add_location(div2, file$6, 175, 0, 5795);
+    			add_location(p4, file$6, 207, 2, 7263);
+    			add_location(div2, file$6, 188, 0, 6365);
     			attr_dev(div3, "class", "card");
-    			add_location(div3, file$6, 151, 0, 5120);
+    			add_location(div3, file$6, 164, 0, 5690);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -16592,10 +16594,24 @@ var app = (function () {
 
     	function set_lcsc(event) {
     		const newvalue = event.srcElement.value;
+    		let fieldname = "LCSC";
     		console.log("blur lcsc", newvalue);
     		console.log("grouped_data", $grouped_data);
     		console.log("parts_dict", parts_dict[footprints[footprint_idx]]);
-    		$$invalidate(9, parts_dict[footprints[footprint_idx]][values[value_idx]].LCSC = newvalue, parts_dict);
+    		set_field(fieldname, newvalue);
+    	}
+
+    	function set_field(fieldname, newvalue) {
+    		$$invalidate(9, parts_dict[footprints[footprint_idx]][values[value_idx]][fieldname] = newvalue, parts_dict);
+    		let references = parts_dict[footprints[footprint_idx]][values[value_idx]].designator;
+
+    		for (const ref of references) {
+    			const map = $grouped_data["ref_map"].filter(elt => elt[0] == ref)[0];
+    			console.log(map);
+    			let file = $grouped_data["files"].filter(elt => elt.name == map[1])[0];
+    			update_field(fieldname, newvalue, file.content[map[2]].lines);
+    			console.log("content", file.content[map[2]].lines);
+    		}
     	}
 
     	function set_mpn(event) {
@@ -16603,6 +16619,7 @@ var app = (function () {
     		console.log("blur mpn", newvalue);
     		$$invalidate(9, parts_dict[footprints[footprint_idx]][values[value_idx]].MPN = newvalue, parts_dict);
     		console.log("blur mpn");
+    		set_field("MPN", newvalue);
     	}
 
     	function set(event) {
@@ -16704,6 +16721,7 @@ var app = (function () {
     		reset,
     		clear_value,
     		set_lcsc,
+    		set_field,
     		set_mpn,
     		set,
     		change,
