@@ -104,7 +104,7 @@ function process_sheet_content(contents, sheets_to_update) {
 }
 
 
-let required_fields = ['MPN', 'LCSC']
+export let required_fields = ['MPN', 'LCSC']
 function add_field(name, lines) {
     let num_f = 0;
     let newline;
@@ -211,7 +211,7 @@ function add_to_group(contents, grouped, ref_map, sheet_name) {
                     }
                 }
             }
-            console.log('fields to add', fields_to_add);
+            // console.log('fields to add', fields_to_add);
             fields_to_add.forEach( elt => {
                 item.lines = add_field(elt, item.lines)
                 num_f++;

@@ -14,13 +14,6 @@
   export let files = [];
   let fileList = [];
 
-  function handleFilesSelect(e) {
-    const { acceptedFiles, fileRejections } = e.detail;
-    files.accepted = acceptedFiles.filter(elt=> elt.name.endsWith('.sch'))
-    // console.log(e)
-    // files.accepted = [...files.accepted, ...acceptedFiles];
-    //files.rejected = [...files.rejected, ...fileRejections];
-  }
   function readFiles(files) {
     if (files.length > 0) {
       clear_sch();
@@ -55,15 +48,25 @@
   }
   //$: console.log(sch_idx)
   function click() {
+    // clear fileList so that change event will work...
+    document.getElementById('fileInput').value= null;
     let input = document.getElementById("fileInput");
     input.click()
   }
+  function input_click() {
+    console.log('********input click')
+    console.log('fileList before', fileList);
+  }
   function blur() {
-    console.log('blur')
+    console.log('********input blur')
+  }
+  function value() {
+    console.log('********input value')
   }
   function change() {
+    console.log('input change')
     if (fileList.length>0) {
-      console.log('change')
+      console.log('fileList.length>0')
       sch_idx = -1;
       files = Array.from(fileList)
       readFiles(files)
@@ -73,17 +76,20 @@
     console.log('change', files, files.keys())
   }
   function handleSelect(event) {
-    console.log('handle file select')
+    console.log('handle select selected')
     dispatch('selected',{})
   }
   function handleSelectBlur(event) {
-    console.log('handle file blur')
+    console.log('handle select blur')
     //dispatch('selected',{})
   }
 </script>
 <p class="grouped">
   <input type="file" id="fileInput" bind:files={fileList}
-         accept=".sch" multiple style="display:none;" on:blur={blur} on:change={change}>
+    accept=".sch" multiple style="display:none;"
+    on:blur={blur} on:change={change} on:value={value}
+    on:click={input_click}
+  >
   <Button primary on:click={click}>
     Load new schematic
   </Button>
