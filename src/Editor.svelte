@@ -88,12 +88,29 @@
       console.log('change footprint', footprints[footprint_idx], newkey)
       const oldkey = footprints[footprint_idx]
       const oldvalue = values[value_idx]
+      let refs_to_update;
       if (newkey in parts_dict) {
         if (values[value_idx] in parts_dict[newkey]) {
           // TODO
           alert("In footprint change, Value Merge is not implemented")
           // update parts_dict by merging references
+          const old_entry = parts_dict[footprints[footprint_idx]][values[value_idx]]
+          const new_entry = parts_dict[newkey][values[value_idx]]
+          console.log('old, new entry',old_entry, new_entry)
+          const combined = [].concat(new_entry.designator, old_entry.designator)
+          console.log('combined references', combined)
+          new_entry.designator = combined
           // fetch required fields from new location
+          for (const field of required_fields) {
+            // use set_field on old entry before we delete it to update files
+            set_field(field, new_entry[field], old_entry.designator)
+          }
+          refs_to_update = old_entry.designator;
+          // delete parts_dict[oldkey][values[value_idx]]
+          delete parts_dict[footprints[footprint_idx]][values[value_idx]]
+          if (Object.keys(parts_dict[footprints[footprint_idx]]).length === 0) {
+            delete parts_dict[footprints[footprint_idx]]
+          }
           // update file with new location and new fields
         } else {
           // Update parts_dict: create new value key in the footprint, delete old key
@@ -116,8 +133,8 @@
       values = Object.keys(parts_dict[footprints[footprint_idx]])
       value_idx = values.indexOf(oldvalue)
       console.log('footprint_idx, value_idx', footprint_idx, value_idx)
-      // update file
-      set_field('Footprint', newkey)
+      // update file, refs_to_update is not defined unless merging
+      set_field('Footprint', newkey, refs_to_update)
     }
     if (event.srcElement.id == "Value") {
       console.log('old value', values[value_idx], 'new', newkey)
@@ -224,12 +241,12 @@
   <p class="grouped">
     <label class="fields" for="Footprint">Footprint </label>
     <input type="text" class="fields-input" id="Footprint" value= {footprints[footprint_idx] ?
-           footprints[footprint_idx] : ''} on:blur={set} on:change={change} disabled={value_idx<0 || footprint_idx<0}>
+           footprints[footprint_idx] : ''} on:change={change} disabled={value_idx<0 || footprint_idx<0}>
   </p>  
   <p class="grouped">
     <label class="fields" for="Value">Value </label>
     <input type="text" id="Value" value= {values[value_idx] ?
-      values[value_idx] : ''} on:blur={set} on:change={change} disabled={value_idx<0 || footprint_idx<0}>
+      values[value_idx] : ''} on:change={change} disabled={value_idx<0 || footprint_idx<0}>
   </p>  
   <p class="grouped">
     <label class="fields" for="LCSC">LCSC </label>

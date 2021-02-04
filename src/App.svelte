@@ -102,20 +102,22 @@
 {#if sch_idx>=0}
 <Editor />
 <br>
+<!--
 <button on:click={open}> window open </button>
-<button on:click={zip}> zip </button>
 <button on:click={log_json}>
   Look at JSON
-</button> &nbsp&nbsp&nbsp
-<button on:click={lookup_part}>
-  Look up part
 </button> &nbsp&nbsp&nbsp
 <button on:click={download}>
   Download updated json
 </button>
+<button on:click={update_files}> update raw </button>
+-->
+<button on:click={zip}> zip </button>
+<button on:click={lookup_part}>
+  Look up part
+</button> &nbsp&nbsp&nbsp
 <button on:click={parts_to_database}>
   Save all parts to database / csv
 </button>
-<button on:click={update_files}> update raw </button>
 {/if}
 
