@@ -59,7 +59,24 @@
   function lookup_part() {
     alert('not implemented yet')
   }
-  function parts_to_database() {
+  function parts_to_json() {
+    let db = []
+    const parts_dict = $grouped_data.grouped
+    for (let footprint in parts_dict) {
+      for (let value in parts_dict[footprint]) {
+        let entry = {}
+        entry['footprint'] = footprint;
+        entry['value'] = value;
+        // TODO make this a for loop
+        entry['LCSC'] = parts_dict[footprint][value].LCSC
+        entry['MPN'] = parts_dict[footprint][value].MPN
+        db.push(entry)
+      }
+    }
+    const blob = new Blob([JSON.stringify(db, null, 2)], {type : 'application/json'});
+    downloadBlob(blob,'db.json')
+  }
+  function parts_to_csv() {
     //alert('not implemented yet')
     let lines = []
     const parts_dict = $grouped_data
@@ -116,8 +133,8 @@
 <button on:click={lookup_part}>
   Look up part
 </button> &nbsp&nbsp&nbsp
-<button on:click={parts_to_database}>
-  Save all parts to database / csv
+<button on:click={parts_to_json}>
+  Save all parts to json array
 </button>
 {/if}
 
