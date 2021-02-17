@@ -1,3 +1,17 @@
+# This webapp can be used to tweak the schematic files in a kicad project to LCSC and MPN fields to components so that BOM for JLCPCB.com can be generated for assmebly boards.
+
+## Notes
+*  Built using svelte in javascript
+*  Deployed to github-pages in this repo.. Here is the link   https://saewoonam.github.io/svelte-kicad-sch-tweaker/
+
+## Local installation notes if desired
+1.  install node modules using: yarn
+2.  after install, run using: yarn run dev
+3.  deploy to github-pages use:  yarn run deploy
+
+--- 
+svelte template stuff...
+---
 *Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
 
 ---
