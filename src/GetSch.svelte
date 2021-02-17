@@ -91,7 +91,7 @@
     on:click={input_click}
   >
   <Button primary on:click={click}>
-    Load new schematic
+    Load schematics from a project
   </Button>
 
   {#if files.length>0}

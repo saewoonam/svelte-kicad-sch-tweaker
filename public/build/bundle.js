@@ -14850,7 +14850,7 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			t = text("Load new schematic");
+    			t = text("Load schematics from a project");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, t, anchor);
@@ -14896,7 +14896,7 @@ var app = (function () {
     			attr_dev(select, "size", "1");
     			set_style(select, "width", "200px");
     			if (/*sch_idx*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[9].call(select));
-    			add_location(select, file$5, 97, 4, 2719);
+    			add_location(select, file$5, 97, 4, 2731);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -14980,7 +14980,7 @@ var app = (function () {
     			t1 = space();
     			option.__value = option_value_value = /*id*/ ctx[17];
     			option.value = option.__value;
-    			add_location(option, file$5, 99, 8, 2898);
+    			add_location(option, file$5, 99, 8, 2910);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -15020,7 +15020,7 @@ var app = (function () {
     			h4 = element("h4");
     			h4.textContent = "Select Root schematic";
     			attr_dev(h4, "slot", "header");
-    			add_location(h4, file$5, 108, 4, 3050);
+    			add_location(h4, file$5, 108, 4, 3062);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, h4, anchor);
@@ -15124,7 +15124,7 @@ var app = (function () {
     			t1 = space();
     			option.__value = option_value_value = /*id*/ ctx[17];
     			option.value = option.__value;
-    			add_location(option, file$5, 113, 6, 3304);
+    			add_location(option, file$5, 113, 6, 3316);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -15205,7 +15205,7 @@ var app = (function () {
     			create_component(button.$$.fragment);
     			attr_dev(div, "slot", "footer");
     			attr_dev(div, "class", "is-right");
-    			add_location(div, file$5, 119, 4, 3411);
+    			add_location(div, file$5, 119, 4, 3423);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -15266,7 +15266,7 @@ var app = (function () {
     			attr_dev(select, "size", "5");
     			set_style(select, "width", "200px");
     			if (/*sch_idx*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler_1*/ ctx[10].call(select));
-    			add_location(select, file$5, 110, 4, 3100);
+    			add_location(select, file$5, 110, 4, 3112);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, t0, anchor);
@@ -16939,7 +16939,7 @@ var app = (function () {
     const { console: console_1$2 } = globals;
     const file$7 = "src/App.svelte";
 
-    // (119:0) {#if sch_idx>=0}
+    // (120:0) {#if sch_idx>=0}
     function create_if_block$7(ctx) {
     	let editor;
     	let t0;
@@ -16969,10 +16969,10 @@ var app = (function () {
     			t5 = text("    \n");
     			button2 = element("button");
     			button2.textContent = "Save all parts to json array";
-    			add_location(br, file$7, 120, 0, 3860);
-    			add_location(button0, file$7, 131, 0, 4108);
-    			add_location(button1, file$7, 132, 0, 4146);
-    			add_location(button2, file$7, 135, 0, 4219);
+    			add_location(br, file$7, 121, 0, 3976);
+    			add_location(button0, file$7, 132, 0, 4224);
+    			add_location(button1, file$7, 133, 0, 4262);
+    			add_location(button2, file$7, 136, 0, 4335);
     		},
     		m: function mount(target, anchor) {
     			mount_component(editor, target, anchor);
@@ -17025,7 +17025,7 @@ var app = (function () {
     		block,
     		id: create_if_block$7.name,
     		type: "if",
-    		source: "(119:0) {#if sch_idx>=0}",
+    		source: "(120:0) {#if sch_idx>=0}",
     		ctx
     	});
 
@@ -17035,10 +17035,12 @@ var app = (function () {
     function create_fragment$7(ctx) {
     	let h2;
     	let t1;
+    	let p;
+    	let t3;
     	let getsch;
     	let updating_files;
     	let updating_sch_idx;
-    	let t2;
+    	let t4;
     	let if_block_anchor;
     	let current;
 
@@ -17071,11 +17073,15 @@ var app = (function () {
     			h2 = element("h2");
     			h2.textContent = "Kicad schematic tweaker";
     			t1 = space();
+    			p = element("p");
+    			p.textContent = "You need to select all the files in the folder that end with .sch.  In windows use ctrl-a, in osx use cmd-a";
+    			t3 = space();
     			create_component(getsch.$$.fragment);
-    			t2 = space();
+    			t4 = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			add_location(h2, file$7, 116, 0, 3718);
+    			add_location(p, file$7, 117, 0, 3751);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -17083,8 +17089,10 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, h2, anchor);
     			insert_dev(target, t1, anchor);
+    			insert_dev(target, p, anchor);
+    			insert_dev(target, t3, anchor);
     			mount_component(getsch, target, anchor);
-    			insert_dev(target, t2, anchor);
+    			insert_dev(target, t4, anchor);
     			if (if_block) if_block.m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
     			current = true;
@@ -17143,8 +17151,10 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(h2);
     			if (detaching) detach_dev(t1);
+    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(t3);
     			destroy_component(getsch, detaching);
-    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(t4);
     			if (if_block) if_block.d(detaching);
     			if (detaching) detach_dev(if_block_anchor);
     		}

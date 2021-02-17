@@ -115,6 +115,7 @@
   */
 </script>
 <h2>Kicad schematic tweaker</h2>
+<p>You need to select all the files in the folder that end with .sch.  In windows use ctrl-a, in osx use cmd-a </p>
 <GetSch bind:files={files} bind:sch_idx={sch_idx} on:selected={handleSelected}/>
 {#if sch_idx>=0}
 <Editor />
