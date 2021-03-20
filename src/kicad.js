@@ -67,7 +67,7 @@ export function load_sheet(raw) {
     console.log('done')
     return contents
 }
-function process_sheet_content(contents, sheets_to_update) {
+function process_sheet_content(contents, sheets_to_update, sheet_list) {
     // let grouped = {}
     console.log('mark components')
     // mark items which are components
@@ -97,6 +97,9 @@ function process_sheet_content(contents, sheets_to_update) {
                     console.log('sheet filename', pieces[1])
                     const index = sheets_to_update.indexOf(name)
                     if (index==-1) sheets_to_update.push(name)
+                } else if (/^U /.test(line)) {
+                    var pieces = line.match(/(?:[^\s"]+|"[^"]*")+/g);
+                    sheet_list.push(pieces[1])
                 }
             }
         }
@@ -160,7 +163,7 @@ export function update_field(name, value, lines) {
     }
 }
 
-function add_to_group(contents, grouped, ref_map, sheet_name) {
+function add_to_group(contents, grouped, ref_map, sheet_name, sheet_ids) {
     let item_idx = 0;
     for (let item of contents) {
         if (item['component']) {
@@ -176,10 +179,22 @@ function add_to_group(contents, grouped, ref_map, sheet_name) {
                 if (/^AR/.test(line)) {
                     const ref = pieces[2].match(/"(.*?)"/)[1];
                     if (!ref.endsWith('?')) {
-                        const index = references.indexOf(ref)
-                        if (index==-1) { 
-                            references.push(ref);
-                            ref_map.push([ref, sheet_name, item_idx])
+                        const path = (pieces[1].match(/"(.*?)"/)[1]).split('/').filter(e => e.length > 0);
+                        path.splice(-1,1)
+                        // console.log(path)
+                        // console.log(sheet_ids);
+                        let valid_id = true;
+                        const reducer = (valid, elt) => valid && sheet_ids.includes(elt);
+                        if (path.length>0){
+                            valid_id = path.reduce(reducer, valid_id)
+                            // console.log('path valid:', valid_id)
+                        }
+                        if (valid_id) {
+                            const index = references.indexOf(ref)
+                            if (index==-1) { 
+                                references.push(ref);
+                                ref_map.push([ref, sheet_name, item_idx])
+                            }
                         }
                     }
                 }
@@ -247,8 +262,9 @@ export function get_all_sheets(files, start_idx) {
     // console.log('content', content);
     files[start_idx].content = content
     let sheets_to_process = [];
-    process_sheet_content(content, sheets_to_process);
-    add_to_group(content, grouped, ref_map, files[start_idx].name)
+    let sheet_ids = [];
+    process_sheet_content(content, sheets_to_process, sheet_ids);
+    add_to_group(content, grouped, ref_map, files[start_idx].name, sheet_ids)
     console.log('sheets_to_update', sheets_to_process)
     while (sheets_to_process.length>0) {
         // const new_name = path.dirname(filename)+path.sep+sheets_to_update.pop()
@@ -257,8 +273,8 @@ export function get_all_sheets(files, start_idx) {
         let file = files.filter(elt => elt.name==new_name)[0]
         content = load_sheet(file.raw)
         file.content = content
-        process_sheet_content(content, sheets_to_process);
-        add_to_group(content, grouped, ref_map, new_name)
+        process_sheet_content(content, sheets_to_process, sheet_ids);
+        add_to_group(content, grouped, ref_map, new_name, sheet_ids)
         console.log('sheets_to_update', sheets_to_process)
     }
     console.log('Done with get_all_sheets')
